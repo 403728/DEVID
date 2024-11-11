@@ -1,157 +1,163 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prediction Timer</title>
+    <title>Prediction Results</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Courier New', monospace;
+            background-color: #0d0d0d;
+            color: #ffffff;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             height: 100vh;
-            background-color: #1c1f26;
-            color: #fff;
             margin: 0;
+            overflow: hidden;
         }
-        .title {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #FFD700; /* Gold color for the title */
-            text-align: center;
-            text-shadow: 2px 2px 5px rgba(255, 215, 0, 0.5);
-        }
+
         .container {
-            text-align: center;
-            width: 80%;
-            max-width: 600px;
+            width: 350px;
             padding: 20px;
-            background-color: #2b2f38;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-        }
-        .box {
-            font-size: 1.5rem;
-            margin: 15px 0;
-            padding: 15px;
-            border-radius: 10px;
-            border: 2px solid #999;
+            border-radius: 15px;
+            background: #1a1a1a;
+            box-shadow: 0 0 25px rgba(255, 0, 255, 0.6), 0 0 15px rgba(0, 255, 255, 0.4);
             text-align: center;
-            color: #333;
-            background-color: #FFF3;
         }
-        .period-box {
-            background: linear-gradient(45deg, #FFD700, #FFFFE0);
-            color: #333;
+
+        h1 {
+            color: #ff66cc;
+            text-shadow: 0 0 15px rgba(255, 102, 204, 1);
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+
+        .box {
+            padding: 15px;
+            margin: 15px 0;
+            background: linear-gradient(135deg, #222, #333);
+            border-radius: 12px;
+            border: 2px solid #ff66cc;
+            box-shadow: inset 0 0 10px rgba(255, 0, 255, 0.5);
+            color: #ffffff;
+            font-size: 1.2em;
+        }
+
+        #timer {
+            color: #00ffff;
             font-weight: bold;
+            font-size: 1.4em;
         }
-        .timer-box, .result-box {
-            animation: rgbBoxAnimation 1.5s infinite alternate;
-            color: #fff;
+
+        #currentResult {
+            font-size: 1.3em;
+            color: #ff66cc;
         }
-        .telegram-button {
-            padding: 10px 20px;
-            font-size: 1rem;
-            margin-top: 20px;
-            color: #fff;
-            background-color: #0088cc;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-            display: inline-block;
-        }
-        .telegram-button:hover {
-            background-color: #005b8c;
-        }
-        .history {
-            margin-top: 20px;
+
+        .history-list {
+            list-style-type: none;
+            padding: 0;
+            font-size: 0.9em;
+            max-height: 200px;
+            overflow-y: auto;
             text-align: left;
-            color: pink;
         }
+
         .history-item {
-            background-color: #333;
-            padding: 10px;
-            border-radius: 8px;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 8px;
             margin: 5px 0;
-            border: 1px solid #555;
-            color: #ff69b4; /* pink color */
-            font-size: 0.9rem;
-        }
-        .history-item span {
-            display: block;
-        }
-        @keyframes rgbBoxAnimation {
-            0% { background-color: #ff0000; }
-            33% { background-color: #00ff00; }
-            66% { background-color: #0000ff; }
-            100% { background-color: #ff00ff; }
+            border-radius: 8px;
+            border-left: 3px solid #ff66cc;
+            box-shadow: 0 0 8px rgba(255, 102, 204, 0.3);
         }
     </style>
 </head>
 <body>
-    <div class="title">IVAR ULTIMATE</div>
-    <div class="container">
-        <div class="box period-box">Period: <span id="periodNumber">Loading...</span></div>
-        <div class="box timer-box">Timer: <span id="timer">00 : 00</span></div>
-        <div class="box result-box">Result: <span id="result">Waiting...</span></div>
-        <a href="https://t.me/ivarmodsultra" target="_blank" class="telegram-button">Join Telegram Channel</a>
-        <div class="history">
-            <h3>History</h3>
-            <div id="historyList"></div>
-        </div>
+
+<div class="container">
+    <h1>OBITO 1M FUCK SERVER</h1>
+
+    <div class="box">
+        <div>Period Number</div>
+        <div id="periodNumber">Loading...</div>
     </div>
 
-    <script>
-        const periodNumber = document.getElementById("periodNumber");
-        const timerDisplay = document.getElementById("timer");
-        const resultDisplay = document.getElementById("result");
-        const historyList = document.getElementById("historyList");
+    <div class="box">
+        <div>Timer</div>
+        <div id="timer">00:60</div>
+    </div>
 
-        const resultsArray = ["BIG", "SMALL", "BIG", "SMALL", "SMALL", "BIG", "SMALL", "BIG", "BIG", "SMALL"];
-        let lastPeriod = null;
+    <div class="box">
+        <div>Current Result</div>
+        <div id="currentResult">Waiting...</div>
+    </div>
 
-        function updatePeriodAndResult() {
-            const now = new Date();
-            const minutes = now.getUTCHours() * 60 + now.getUTCMinutes();
-            const seconds = now.getUTCSeconds();
-            const period = 10001 + minutes;
-            const newPeriodNumber = `${now.toISOString().slice(0, 10).replace(/-/g, '')}1000${period}`;
+    <div class="box">
+        <div>History</div>
+        <ul id="history" class="history-list"></ul>
+    </div>
+</div>
 
-            if (newPeriodNumber !== lastPeriod) {
-                lastPeriod = newPeriodNumber;
-                periodNumber.textContent = newPeriodNumber;
+<script>
+    const periodNumberElement = document.getElementById('periodNumber');
+    const timerElement = document.getElementById('timer');
+    const currentResultElement = document.getElementById('currentResult');
+    const historyElement = document.getElementById('history');
 
-                // Show result once per period change
-                const randomIndex = Math.floor(Math.random() * resultsArray.length);
-                const result = resultsArray[randomIndex];
-                resultDisplay.textContent = result;
+    const results = [
+        'SMALL', 'BIG', 'BIG', 'BIG', 'BIG', 'BIG', 'BIG', 'SMALL', 'BIG', 'SMALL', 
+        'SMALL', 'SMALL', 'SMALL', 'SMALL', 'BIG', 'SMALL', 'SMALL', 'BIG', 'BIG', 'SMALL', 
+        'BIG', 'BIG', 'BIG', 'SMALL', 'SMALL', 'SMALL', 'BIG', 'BIG', 'SMALL', 'BIG', 
+        'SMALL', 'SMALL', 'BIG', 'BIG', 'SMALL', 'SMALL', 'BIG', 'SMALL', 'SMALL', 'BIG'
+    ];
+    let currentPeriodNumber = 0;
+    let currentResultIndex = -1;
+    let lastDisplayedPeriod = -1;
 
-                // Add to history in a box format
-                const historyItem = document.createElement("div");
-                historyItem.className = "history-item";
-                historyItem.innerHTML = `<span>Period: ${newPeriodNumber}</span><span>Result: ${result}</span>`;
-                historyList.prepend(historyItem);  // Adds the new period at the top
-            }
+    function updatePeriodAndResult() {
+        const now = new Date();
+        const utcYear = now.getUTCFullYear();
+        const utcMonth = String(now.getUTCMonth() + 1).padStart(2, '0');
+        const utcDay = String(now.getUTCDate()).padStart(2, '0');
+        const utcHours = now.getUTCHours();
+        const utcMinutes = now.getUTCMinutes();
+        const totalMinutes = utcHours * 60 + utcMinutes;
+
+        currentPeriodNumber = 10001 + totalMinutes;
+        const periodString = `${utcYear}${utcMonth}${utcDay}1000${currentPeriodNumber}`;
+        periodNumberElement.textContent = periodString;
+
+        if (currentPeriodNumber !== lastDisplayedPeriod && currentResultIndex < results.length - 1) {
+            currentResultIndex++;
+            const result = results[currentResultIndex];
+            currentResultElement.textContent = result;
+
+            const historyItem = document.createElement('li');
+            historyItem.textContent = `Period: ${periodString}, Result: ${result}`;
+            historyItem.className = 'history-item';
+            historyElement.prepend(historyItem);
+
+            lastDisplayedPeriod = currentPeriodNumber;
         }
+    }
 
-        function updateTimer() {
+    function startTimer() {
+        setInterval(() => {
             const now = new Date();
             const remainingSeconds = 60 - now.getUTCSeconds();
-            timerDisplay.textContent = `00 : ${remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds}`;
-        }
+            const secondsDisplay = remainingSeconds.toString().padStart(2, '0');
+            timerElement.textContent = `00:${secondsDisplay}`;
 
-        // Run update every second
-        setInterval(() => {
-            updateTimer();
-            if (new Date().getUTCSeconds() === 0) {
+            if (remainingSeconds === 60) {
                 updatePeriodAndResult();
             }
         }, 1000);
-    </script>
-</body>
-</html>
+    }
+
+    window.onload = startTimer;
+</script>
+
+
+
+</body></html>
